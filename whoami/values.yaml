@@ -1,0 +1,12 @@
+replicaCount: 1
+
+image:
+  repository: traefik/whoami
+  tag: ""
+
+service:
+  port: 80
+
+ingress:
+  enabled: true
+  host: whoami.kube.home

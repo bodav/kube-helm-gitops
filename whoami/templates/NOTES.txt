@@ -1,0 +1,11 @@
+Whoami has been deployed!
+
+{{- if .Values.ingress.enabled }}
+
+Access the application at: http://{{ .Values.ingress.host }}
+
+{{- else }}
+
+Port-forward to access: kubectl port-forward svc/{{ include "whoami.name" . }} 8080:80
+
+{{- end }}
