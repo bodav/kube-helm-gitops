@@ -1,0 +1,113 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChartConfig
+metadata:
+  name: traefik
+  namespace: kube-system
+spec:
+  valuesContent: |-
+
+    # Redirection at the entrypoint level (static config). HTTP to HTTPS
+    ports:
+      web:
+        redirections:
+          entryPoint:
+            to: websecure
+            scheme: https
+            permanent: true
+
+    # Enable Traefik's dashboard over HTTPS
+    api:
+      dashboard: true
+      insecure: false
+
+    # Disable IngressRoute for the dashboard as we'll use Gateway API HTTPRoute
+    ingressRoute:
+      dashboard:
+        enabled: false
+
+    # Enable Gateway API and disable Ingress
+    providers:
+      kubernetesGateway:
+        enabled: true
+      kubernetesIngress:
+        enabled: false
+      kubernetesCRD:
+        enabled: true
+
+    # Configure Gateway API
+    gateway:
+      enabled: true
+      name: traefik-gateway
+      listeners:
+        web:
+          port: 8000
+          protocol: HTTP
+          namespacePolicy:
+            from: All
+
+        websecure:
+          port: 8443
+          protocol: HTTPS
+          namespacePolicy:
+            from: All
+          mode: Terminate
+          certificateRefs:
+            - kind: Secret
+              name: local-selfsigned-tls
+              group: ""
+
+    # Define custom middleware objects and the new HTTPRoute
+    extraObjects:
+      # 1. Middleware for Basic Authentication
+      - apiVersion: traefik.io/v1alpha1
+        kind: Middleware
+        metadata:
+          name: dashboard-auth
+          namespace: kube-system
+        spec:
+          basicAuth:
+            secret: dashboard-auth
+      # 2. Middleware to redirect root to /dashboard/
+      - apiVersion: traefik.io/v1alpha1
+        kind: Middleware
+        metadata:
+          name: dashboard-redirect
+          namespace: kube-system
+        spec:
+          redirectRegex:
+            regex: "^https://traefik.k3s.local/?$"
+            replacement: "https://traefik.k3s.local/dashboard/"
+      # 3. HTTPRoute to expose the dashboard via Gateway API
+      - apiVersion: gateway.networking.k8s.io/v1
+        kind: HTTPRoute
+        metadata:
+          name: traefik-dashboard
+          namespace: kube-system
+        spec:
+          # References the Gateway that will handle this traffic
+          parentRefs:
+            - name: traefik-gateway
+              namespace: kube-system
+              sectionName: websecure # Bind to the HTTPS listener
+          # The domain name used to access the dashboard
+          hostnames:
+            - "traefik.k3s.local"
+          rules:
+            - filters:
+                # Use ExtensionRef to reference Traefik Middlewares
+                # This replaces the older annotation-based approach
+                - type: ExtensionRef
+                  extensionRef:
+                    group: traefik.io
+                    kind: Middleware
+                    name: dashboard-auth
+                - type: ExtensionRef
+                  extensionRef:
+                    group: traefik.io
+                    kind: Middleware
+                    name: dashboard-redirect
+              backendRefs:
+                - name: api@internal
+                  group: traefik.io
+                  kind: TraefikService
+                  port: 8080
