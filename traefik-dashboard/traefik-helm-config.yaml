@@ -5,11 +5,28 @@ metadata:
   namespace: kube-system
 spec:
   valuesContent: |-
-    dashboard:
-      enabled: true
-    ports:
-      traefik:
-        expose:
-          default: true
-    api:
-      insecure: true
+    ingressRoute:
+      dashboard:
+        enabled: true
+        matchRule: Host(`traefik.kube.home`)
+        entryPoints:
+          - web
+    providers:
+      kubernetesGateway:
+        enabled: true
+    gateway:
+      listeners:
+        web:
+          namespacePolicy:
+            from: All
+
+    extraObjects:
+      - apiVersion: traefik.io/v1alpha1
+        kind: Middleware
+        metadata:
+          name: dashboard-redirect
+          namespace: kube-system
+        spec:
+          redirectRegex:
+            regex: "^http://traefik.kube.home/?$"
+            replacement: "https://traefik.kube.home/dashboard/"
