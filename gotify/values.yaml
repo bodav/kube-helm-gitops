@@ -23,7 +23,6 @@ persistence:
   storageClass: "local-path"
   accessMode: ReadWriteOnce
   size: 1Gi
-  # existingClaim: ""
 
 env:
   - name: GOTIFY_DEFAULTUSER_NAME

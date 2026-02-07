@@ -2,11 +2,18 @@ replicaCount: 1
 
 image:
   repository: traefik/whoami
-  tag: ""
+  pullPolicy: IfNotPresent
 
 service:
+  type: ClusterIP
   port: 80
 
 ingress:
   enabled: true
+  className: "traefik"
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web
   host: whoami.kube.home
+  paths:
+    - path: /
+      pathType: Prefix
