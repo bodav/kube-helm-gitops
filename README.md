@@ -5,6 +5,8 @@ Helm charts for deploying applications to a k3s homelab cluster.
 ## TODO
 
 * kubewatch
+* helmfile
+* common lib
 
 ## Charts
 
@@ -12,6 +14,7 @@ Helm charts for deploying applications to a k3s homelab cluster.
 - **whoami** - Simple HTTP service for testing
 - **jellyfin** - Media server for streaming your collection
 - **metube** - Web GUI for youtube-dl with playlist support
+- **filebrowser** - Web-based file manager for media storage
 
 ## Deployment Order
 
@@ -26,7 +29,13 @@ Helm charts for deploying applications to a k3s homelab cluster.
 2. **Install MeTube** (uses Jellyfin's media PVC):
    ```bash
    cd ../metube
-   helm install metube . --set persistence.existingClaim="jellyfin-jellyfin-media"
+   hel
+
+3. **Install File Browser** (optional - manages the media files):
+   ```bash
+   cd ../filebrowser
+   helm install filebrowser .
+   ```m install metube . --set persistence.existingClaim="jellyfin-jellyfin-media"
    ```
 
 This setup allows MeTube to download videos that Jellyfin can immediately stream.
@@ -44,6 +53,7 @@ helm install whoami .
 ```
 
 ## Accessing Services
+- File Browser: http://filebrowser.kube.home (admin/admin)
 
 Default hostnames (configure in your DNS or `/etc/hosts`):
 - Gotify: http://gotify.kube.home

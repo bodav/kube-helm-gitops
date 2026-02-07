@@ -1,0 +1,41 @@
+replicaCount: 1
+
+image:
+  repository: filebrowser/filebrowser
+  pullPolicy: IfNotPresent
+  tag: ""
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  className: "traefik"
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+  host: files.kube.home
+  paths:
+    - path: /
+      pathType: Prefix
+
+persistence:
+  # Config persistence for filebrowser database
+  config:
+    enabled: true
+    storageClass: "local-path"
+    accessMode: ReadWriteOnce
+    size: 1Gi
+
+  # Media persistence - uses Jellyfin's media PVC
+  media:
+    enabled: true
+    existingClaim: "jellyfin-media"
+
+env:
+  - name: FB_DATABASE
+    value: "/config/filebrowser.db"
+  - name: FB_ROOT
+    value: "/media"
+  - name: FB_PORT
+    value: "80"
