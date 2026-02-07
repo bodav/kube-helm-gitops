@@ -15,6 +15,7 @@ Helm charts for deploying applications to a k3s homelab cluster.
 - **jellyfin** - Media server for streaming your collection
 - **metube** - Web GUI for youtube-dl with playlist support
 - **filebrowser** - Web-based file manager for media storage
+- **simplejob** - Simple Kubernetes Job for testing
 
 ## Deployment Order
 
@@ -28,8 +29,8 @@ Helm charts for deploying applications to a k3s homelab cluster.
 
 2. **Install MeTube** (uses Jellyfin's media PVC):
    ```bash
-   cd ../metube
-   hel
+   cd m install metube .
+   ```
 
 3. **Install File Browser** (optional - manages the media files):
    ```bash
@@ -50,16 +51,23 @@ helm install gotify .
 # Whoami
 cd whoami
 helm install whoami .
+
+# Simple Job
+cd simplejob
+helm install hello .
 ```
 
 ## Accessing Services
-- File Browser: http://filebrowser.kube.home (admin/admin)
 
 Default hostnames (configure in your DNS or `/etc/hosts`):
 - Gotify: http://gotify.kube.home
 - Whoami: http://whoami.kube.home
 - Jellyfin: http://jellyfin.kube.home
 - MeTube: http://metube.kube.home
+- File Browser: http://filebrowser.kube.home (admin/admin)
+
+Jobs (check with kubectl):
+- Simple Job: `kubectl logs job/hello-simplejob`
 
 ## Useful Commands
 

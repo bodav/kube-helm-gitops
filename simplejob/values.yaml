@@ -1,0 +1,22 @@
+replicaCount: 1
+
+image:
+  repository: bash
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+# Job configuration
+job:
+  # Number of times to retry the job
+  backoffLimit: 3
+  # Time to keep completed jobs (in seconds)
+  ttlSecondsAfterFinished: 300
+  # Restart policy for the pod (Never or OnFailure)
+  restartPolicy: Never
+
+# Command to run
+command:
+  - "echo"
+  - "Hello World from Kubernetes Job!"
+
+env: []

@@ -1,0 +1,26 @@
+Simple Job has been deployed!
+
+Job Name: {{ include "simplejob.fullname" . }}
+
+To check the job status:
+  kubectl get job {{ include "simplejob.fullname" . }}
+
+To view the logs:
+  kubectl logs job/{{ include "simplejob.fullname" . }}
+
+The job will run the following command:
+  {{ join " " .Values.command }}
+
+{{- if .Values.job.ttlSecondsAfterFinished }}
+
+The job will be automatically deleted {{ .Values.job.ttlSecondsAfterFinished }} seconds after completion.
+{{- else }}
+
+To manually delete the job after completion:
+  kubectl delete job {{ include "simplejob.fullname" . }}
+{{- end }}
+
+Job Configuration:
+- Backoff Limit: {{ .Values.job.backoffLimit }}
+- Restart Policy: {{ .Values.job.restartPolicy }}
+- Image: {{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
