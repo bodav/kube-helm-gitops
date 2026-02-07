@@ -13,15 +13,14 @@ ingress:
   className: "traefik"
   annotations:
     traefik.ingress.kubernetes.io/router.entrypoints: web
-  hosts:
-    - host: gotify.kube.home
-      paths:
-        - path: /
-          pathType: Prefix
+  host: gotify.kube.home
+  paths:
+    - path: /
+      pathType: Prefix
 
 persistence:
   enabled: true
-  # storageClass: ""
+  storageClass: "local-path"
   accessMode: ReadWriteOnce
   size: 1Gi
   # existingClaim: ""
@@ -31,18 +30,3 @@ env:
     value: "admin"
   - name: GOTIFY_DEFAULTUSER_PASS
     value: "admin"
-
-# Health check probes
-livenessProbe:
-  httpGet:
-    path: /health
-    port: http
-  initialDelaySeconds: 30
-  periodSeconds: 10
-
-readinessProbe:
-  httpGet:
-    path: /health
-    port: http
-  initialDelaySeconds: 5
-  periodSeconds: 5
