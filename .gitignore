@@ -38,3 +38,11 @@ secrets.yaml
 
 # Test output
 test-output/
+
+# Helmfile
+helmfile.lock
+helmfile_*
+.helmfile/
+
+# Environment-specific helmfile values (if using)
+environments/*.local.yaml

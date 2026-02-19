@@ -1,0 +1,78 @@
+---
+# Helmfile for K3s Single Instance Homelab GitOps
+# Desired state for all apps on this k3s instance.
+
+helmDefaults:
+  wait: true
+  timeout: 300
+  createNamespace: true
+  atomic: true
+
+environments:
+  default: {}
+
+releases:
+  # System components
+  - name: traefik-dashboard
+    namespace: kube-system
+    chart: ./system/traefik-dashboard
+    labels:
+      tier: system
+
+  # Media stack
+  - name: jellyfin
+    namespace: media
+    chart: ./apps/jellyfin
+    labels:
+      tier: apps
+      category: media
+    values:
+      - ./apps/jellyfin/values.yaml
+
+  - name: metube
+    namespace: media
+    chart: ./apps/metube
+    labels:
+      tier: apps
+      category: media
+    values:
+      - ./apps/metube/values.yaml
+    needs:
+      - media/jellyfin
+
+  - name: filebrowser
+    namespace: media
+    chart: ./apps/filebrowser
+    labels:
+      tier: apps
+      category: media
+    values:
+      - ./apps/filebrowser/values.yaml
+    needs:
+      - media/jellyfin
+
+  # Utility applications
+  - name: gotify
+    namespace: tools
+    chart: ./apps/gotify
+    labels:
+      tier: apps
+      category: notifications
+    values:
+      - ./apps/gotify/values.yaml
+
+  - name: whoami
+    namespace: default
+    chart: ./apps/whoami
+    labels:
+      tier: apps
+      category: testing
+    values:
+      - ./apps/whoami/values.yaml
+
+  # Simple job for testing (disabled by default)
+  # - name: simplejob
+  #   namespace: default
+  #   chart: ./apps/simplejob
+  #   values:
+  #     - ./apps/simplejob/values.yaml
