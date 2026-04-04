@@ -3,6 +3,7 @@ environments:
     values:
       - ./environment.yaml
 ---
+
 helmDefaults:
   wait: true
   timeout: 300
@@ -61,9 +62,3 @@ releases:
       tier: apps
     values:
       - ./apps/whoami/values.yaml
-
-  # - name: simplejob
-  #   namespace: default
-  #   chart: ./apps/simplejob
-  #   values:
-  #     - ./apps/simplejob/values.yaml
