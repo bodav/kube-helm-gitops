@@ -26,6 +26,12 @@ persistence:
 
 env:
   - name: GOTIFY_DEFAULTUSER_NAME
-    value: "admin"
+    valueFrom:
+      secretKeyRef:
+        name: gotify-user-secret
+        key: username
   - name: GOTIFY_DEFAULTUSER_PASS
-    value: "admin"
+    valueFrom:
+      secretKeyRef:
+        name: gotify-user-secret
+        key: userpass
