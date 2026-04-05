@@ -1,64 +1,58 @@
-environments:
-  default:
-    values:
-      - ./environment.yaml
----
-
 helmDefaults:
   wait: true
   timeout: 300
   createNamespace: true
-  atomic: true
 
 releases:
-  # System
-  - name: traefik-dashboard
-    namespace: kube-system
-    chart: ./system/traefik-dashboard
-    labels:
-      tier: system
+  # # System
+  # - name: traefik-dashboard
+  #   namespace: kube-system
+  #   chart: ./system/traefik-dashboard
+  #   labels:
+  #     tier: system
 
-  # Applications
-  - name: jellyfin
-    namespace: media
-    chart: ./apps/jellyfin
-    labels:
-      tier: apps
-    values:
-      - ./apps/jellyfin/values.yaml
+  # # Applications
+  # - name: jellyfin
+  #   namespace: media
+  #   chart: ./apps/jellyfin
+  #   labels:
+  #     tier: apps
+  #   values:
+  #     - ./apps/jellyfin/values.yaml
 
-  - name: metube
-    namespace: media
-    chart: ./apps/metube
-    labels:
-      tier: apps
-    values:
-      - ./apps/metube/values.yaml
-    needs:
-      - media/jellyfin
+  # - name: metube
+  #   namespace: media
+  #   chart: ./apps/metube
+  #   labels:
+  #     tier: apps
+  #   values:
+  #     - ./apps/metube/values.yaml
+  #   needs:
+  #     - media/jellyfin
 
-  - name: filebrowser
-    namespace: media
-    chart: ./apps/filebrowser
-    labels:
-      tier: apps
-    values:
-      - ./apps/filebrowser/values.yaml
-    needs:
-      - media/jellyfin
+  # - name: filebrowser
+  #   namespace: media
+  #   chart: ./apps/filebrowser
+  #   labels:
+  #     tier: apps
+  #   values:
+  #     - ./apps/filebrowser/values.yaml
+  #   needs:
+  #     - media/jellyfin
 
-  - name: gotify
-    namespace: tools
-    chart: ./apps/gotify
-    labels:
-      tier: apps
-    values:
-      - ./apps/gotify/values.yaml
+  # - name: gotify
+  #   namespace: tools
+  #   chart: ./apps/gotify
+  #   labels:
+  #     tier: apps
+  #   values:
+  #     - ./apps/gotify/values.yaml
 
   - name: whoami
-    namespace: default
+    namespace: apps
     chart: ./apps/whoami
     labels:
-      tier: apps
+      tier: ops
     values:
-      - ./apps/whoami/values.yaml
+      - ingress:
+          host: whoami.kube.home
