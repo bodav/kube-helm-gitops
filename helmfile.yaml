@@ -4,12 +4,12 @@ helmDefaults:
   createNamespace: true
 
 releases:
-  # # System
-  # - name: traefik-dashboard
-  #   namespace: kube-system
-  #   chart: ./system/traefik-dashboard
-  #   labels:
-  #     tier: system
+  # System
+  - name: traefik-dashboard
+    namespace: kube-system
+    chart: ./system/traefik-dashboard
+    labels:
+      tier: system
 
   # # Applications
   # - name: jellyfin
