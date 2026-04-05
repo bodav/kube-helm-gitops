@@ -1,0 +1,6 @@
+apiVersion: v2
+name: glance
+description: A Helm chart for deploying Glance dashboard on Kubernetes
+type: application
+version: 1.0.0
+appVersion: "v0.8.4"

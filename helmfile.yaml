@@ -11,7 +11,16 @@ releases:
     labels:
       tier: system
 
-  # # Applications
+  # Applications
+  - name: glance
+    namespace: apps
+    chart: ./apps/glance
+    labels:
+      tier: apps
+    values:
+      - ingress:
+          host: glance.kube.home
+          
   # - name: jellyfin
   #   namespace: media
   #   chart: ./apps/jellyfin
