@@ -40,13 +40,14 @@ releases:
   #   needs:
   #     - media/jellyfin
 
-  # - name: gotify
-  #   namespace: tools
-  #   chart: ./apps/gotify
-  #   labels:
-  #     tier: apps
-  #   values:
-  #     - ./apps/gotify/values.yaml
+  - name: gotify
+    namespace: apps
+    chart: ./apps/gotify
+    labels:
+      tier: apps
+    values:
+      - ingress:
+          host: gotify.kube.home
 
   - name: whoami
     namespace: apps

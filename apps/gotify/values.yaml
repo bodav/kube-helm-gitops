@@ -13,7 +13,7 @@ ingress:
   className: "traefik"
   annotations:
     traefik.ingress.kubernetes.io/router.entrypoints: web
-  host: gotify.kube.home
+  host: gotify
   paths:
     - path: /
       pathType: Prefix
