@@ -1,0 +1,50 @@
+# Patterns to ignore when building packages.
+# This is a yaml docker template not supported by helm.
+# Documentation: https://helm.sh/docs/chart_template_guide/builtin_objects/
+# Notes.txt
+# !templates/NOTES.txt
+.git/
+# !.gitignore
+# .travis.yml
+# .dockerignore
+# Dockerfile
+# #!Dockerfile
+# #.dockerignore
+# .DS_Store
+# #.DS_Store
+# __pycache__/
+# _test/
+# #__pycache__/
+# #_test/
+# .vscode/
+# .idea/
+# #.vscode/
+# #.idea/
+# Makefile
+# #Makefile
+*.md
+# !README.md
+# !LICENSE
+# notes.txt, chart.yaml, values.yaml
+# !Chart.yaml
+# !values.yaml
+# !NOTES.txt
+# templates/:
+# !templates/*.yaml
+# templates/*.tpl
+# !templates/*.tpl
+# !templates/_helpers.tpl
+# !templates/NOTES.txt
+# !templates/deployment.yaml
+# !templates/ingress.yaml
+# !templates/service.yaml
+# !templates/pvc.yaml
+# !templates/_helpers.tpl
+# !templates/NOTES.txt
+# !templates/deployment.yaml
+# !templates/ingress.yaml
+# !templates/service.yaml
+# !templates/pvc.yaml
+# !templates/_helpers.tpl
+# !templates/NOTES.txt
+# .helmignore

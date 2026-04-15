@@ -1,0 +1,26 @@
+Ollama AI model server has been deployed!
+
+{{- if .Values.ingress.enabled }}
+
+Access Ollama API at: http://{{ .Values.ingress.host }}
+{{- else }}
+
+To access Ollama, port-forward the service:
+  kubectl port-forward svc/{{ include "ollama.fullname" . }} 8080:{{ .Values.service.port }}
+
+Then access at: http://localhost:8080
+{{- end }}
+
+API endpoint: http://{{ .Values.ingress.host }}/api/tags
+Open WebUI: http://openwebui.kube.home
+
+{{- if .Values.persistence.enabled }}
+
+Model persistence is enabled. Models will be stored in:
+  PVC: {{ if .Values.persistence.existingClaim }}{{ .Values.persistence.existingClaim }}{{ else }}{{ include "ollama.fullname" . }}-data{{ end }}
+{{- else }}
+
+WARNING: Persistence is disabled. Downloaded models will be lost if the pod restarts!
+{{- end }}
+
+For more information, visit: https://github.com/ollama/ollama

@@ -58,6 +58,15 @@ releases:
       - ingress:
           host: gotify.kube.home
 
+  - name: ollama
+    namespace: apps
+    chart: ./apps/ollama
+    labels:
+      tier: apps
+    values:
+      - ingress:
+          host: ollama.kube.home
+
   - name: open-webui
     namespace: apps
     chart: ./apps/open-webui
@@ -66,6 +75,8 @@ releases:
     values:
       - ingress:
           host: ai.kube.home
+    needs:
+      - apps/ollama
 
   - name: whoami
     namespace: apps
