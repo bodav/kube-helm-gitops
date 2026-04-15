@@ -20,7 +20,7 @@ releases:
     values:
       - ingress:
           host: glance.kube.home
-          
+
   # - name: jellyfin
   #   namespace: media
   #   chart: ./apps/jellyfin
@@ -57,6 +57,15 @@ releases:
     values:
       - ingress:
           host: gotify.kube.home
+
+  - name: open-webui
+    namespace: apps
+    chart: ./apps/open-webui
+    labels:
+      tier: apps
+    values:
+      - ingress:
+          host: ai.kube.home
 
   - name: whoami
     namespace: apps

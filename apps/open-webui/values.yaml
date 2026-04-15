@@ -1,0 +1,32 @@
+replicaCount: 1
+
+image:
+  repository: ghcr.io/open-webui/open-webui
+  pullPolicy: IfNotPresent
+  tag: ""
+
+service:
+  type: ClusterIP
+  port: 8080
+
+ingress:
+  enabled: true
+  className: "traefik"
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+  host: openwebui
+  paths:
+    - path: /
+      pathType: Prefix
+
+persistence:
+  enabled: true
+  storageClass: "local-path"
+  accessMode: ReadWriteOnce
+  size: 2Gi
+
+env:
+  - name: ENABLE_WEB_SEARCH
+    value: "true"
+  - name: WEBUI_AUTH
+    value: "false"
